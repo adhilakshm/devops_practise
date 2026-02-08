@@ -1,31 +1,21 @@
 pipeline {
     agent any
-
-    environment {
-        // GitHub token stored in Jenkins credentials
-        GITHUB_TOKEN = credentials('github-token')
-    }
-
     stages {
         stage('Checkout') {
             steps {
-                // Pull repo
+
                 git branch: 'main',
-                    url: 'https://github.com/adhilakshm/devops_practise.git',
-                    credentialsId: 'github-token'
+                    url: 'https://github.com/adhilakshm/devops_practise.git'
             }
         }
 
         stage('Run Ansible Playbook') {
             steps {
-                // Change directory to playbooks folder
-                dir("$WORKSPACE/playbooks") {
-                    // Run playbook with inventory
-                    sh '''
-                    ansible-playbook -i ../inventory/hosts disk.yaml -v
-                    '''
+                    sh '
+                    ansible-playbook disk.yaml -i inventory
+                    '
                 }
             }
         }
     }
-}
+
