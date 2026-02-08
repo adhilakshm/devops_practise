@@ -1,5 +1,5 @@
 - name: Check /dev/shm disk usage
-  hosts: any   # use 'localhost' if running on Jenkins node itself
+  hosts: target   # use 'localhost' if running on Jenkins node itself
   become: yes
   gather_facts: false
   tasks:
