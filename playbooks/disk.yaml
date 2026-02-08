@@ -1,0 +1,17 @@
+- name: Check /dev/shm disk usage
+  hosts: target
+  become: yes
+  tasks:
+    - name: Get /dev/shm usage %
+      shell: df -h /dev/shm | awk 'NR==2 {print $5}' | tr -d '%'
+      register: shm_usage
+
+    - name: Show usage
+      debug:
+        msg: "/dev/shm usage is {{ shm_usage.stdout }}%"
+
+    - name: Fail if usage > 80%
+      fail:
+        msg: "/dev/shm usage crossed 80%"
+      when: shm_usage.stdout | int > 80
+

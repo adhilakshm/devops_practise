@@ -1,0 +1,2 @@
+[target]
+3.141.18.251 ansible_user=ec2-user private_key_file=/keys/target_key.pem
