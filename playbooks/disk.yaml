@@ -3,8 +3,8 @@
   become: yes
   gather_facts: false
   tasks:
-    - name: Get /dev/shm usage %
-      shell: df -h /dev/shm | awk 'NR==2 {print $5}'
+    - name: Disk usage
+      shell: df -h /dev/shm 
       register: shm_usage
 
     - name: Show usage
