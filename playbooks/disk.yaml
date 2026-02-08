@@ -1,6 +1,7 @@
 - name: Check /dev/shm disk usage
-  hosts: target
+  hosts: localhost   # use 'localhost' if running on Jenkins node itself
   become: yes
+  gather_facts: false
   tasks:
     - name: Get /dev/shm usage %
       shell: df -h /dev/shm | awk 'NR==2 {print $5}' | tr -d '%'
@@ -14,4 +15,3 @@
       fail:
         msg: "/dev/shm usage crossed 80%"
       when: shm_usage.stdout | int > 80
-
