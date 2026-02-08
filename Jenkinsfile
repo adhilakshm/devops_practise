@@ -11,9 +11,7 @@ pipeline {
 
         stage('Run Ansible Playbook') {
             steps {
-                    sh '
-                    ansible-playbook disk.yaml -i inventory
-                    '
+                    sh 'ansible-playbook disk.yaml -i inventory'
                 }
             }
         }
