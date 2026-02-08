@@ -4,12 +4,12 @@
   gather_facts: false
   tasks:
     - name: Get /dev/shm usage %
-      shell: df -h /dev/shm | awk 'NR==2 {print $5}' | tr -d '%'
+      shell: df -h /dev/shm | awk 'NR==2 {print $5}'
       register: shm_usage
 
     - name: Show usage
       debug:
-        msg: "/dev/shm usage is {{ shm_usage.stdout }}%"
+        var: shm_usage.stdout
 
     - name: Fail if usage > 80%
       fail:
