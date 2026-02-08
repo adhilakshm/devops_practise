@@ -2,39 +2,30 @@ pipeline {
     agent any
 
     environment {
-        // Create a secret in Jenkins called GITHUB_TOKEN with your PAT
+        // GitHub token stored in Jenkins credentials
         GITHUB_TOKEN = credentials('github-token')
     }
 
     stages {
         stage('Checkout') {
             steps {
+                // Pull repo
                 git branch: 'main',
                     url: 'https://github.com/adhilakshm/devops_practise.git',
                     credentialsId: 'github-token'
             }
         }
 
-        stage('Make Changes') {
+        stage('Run Ansible Playbook') {
             steps {
-                // Your automation tasks go here
-                sh '''
-                echo "New change from Jenkins" >> jenkins_test.txt
-                '''
-            }
-        }
-
-        stage('Commit & Push') {
-            steps {
-                sh '''
-                git config user.email "adhiragu@gmail.com"
-                git config user.name "Adhi Lakshmi"
-                git add .
-                git commit -m "Automated commit from Jenkins" || echo "No changes to commit"
-                git push https://adhilakshm:${GITHUB_TOKEN}@github.com/adhilakshm/devops_practise.git main
-                '''
+                // Change directory to playbooks folder
+                dir("$WORKSPACE/playbooks") {
+                    // Run playbook with inventory
+                    sh '''
+                    ansible-playbook -i ../inventory/hosts disk.yaml -v
+                    '''
+                }
             }
         }
     }
 }
-
